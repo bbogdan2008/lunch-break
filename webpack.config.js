@@ -1,6 +1,8 @@
 const path = require("path");
 const webpack = require("webpack");
 
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+
 module.exports = {
   entry: "./src/index.js",
   mode: "development",
@@ -20,15 +22,20 @@ module.exports = {
   },
   resolve: { extensions: ["*", ".js", ".jsx"] },
   output: {
-    path: path.resolve(__dirname, "dist/"),
-    publicPath: "/dist/",
-    filename: "bundle.js"
+    path: path.resolve(__dirname, "dist"),
+    filename: "[name].bundle.js"
   },
   devServer: {
-    contentBase: path.join(__dirname, "public/"),
+    contentBase: path.join(__dirname, "dist"),
     port: 3000,
-    publicPath: "http://localhost:3000/dist/",
+    publicPath: "http://localhost:3000",
     hotOnly: true
   },
-  plugins: [new webpack.HotModuleReplacementPlugin()]
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "./src/index.html",
+      title: "Lunch break"
+    }),
+    new webpack.HotModuleReplacementPlugin() 
+  ]
 };
