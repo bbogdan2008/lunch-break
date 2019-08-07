@@ -2,8 +2,10 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 import { Provider } from "react-redux";
-import App from "./App";
-import configureStore from "./store";
+import App from "./core/App";
+import configureStore from "./core/store";
+
+import {doLogin} from './login/LoginAction';
 
 const store = configureStore();
 
