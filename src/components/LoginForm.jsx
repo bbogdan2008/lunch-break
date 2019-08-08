@@ -8,29 +8,49 @@ import { doLogin } from '../login/LoginAction';
 class LoginForm extends Component {
   constructor(props) {
     super(props);
-    
+
+    this.state = {
+      username: '',
+      password: '',
+    };
+
+    this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleSubmit(evt) {
-    evt.preventDefault();
+  handleChange(e) {
+    const { name, value } = e.target;
+    this.setState({ [name]: value });
+  }
 
-    console.log("Login action ...");
-    this.props.login('bb','pswd');
+  handleSubmit(e) {
+    e.preventDefault();
+
+    const { username, password } = this.state;
+    if (username && password) {
+      this.props.login(username, password);
+    }
   }
 
   render() {
+
+    const { username, password } = this.state;
+
     return (
       <Form layout="inline" onSubmit={this.handleSubmit} className="form">
         <Form.Item>
-          <Input 
+          <Input
             prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-            placeholder="Username" />
+            placeholder="Username"
+            name="username" value={username}
+            onChange={this.handleChange} />
         </Form.Item>
         <Form.Item>
-          <Input type="password" 
+          <Input type="password"
             prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-            placeholder="Password" />
+            placeholder="Password"
+            name="password" value={password}
+            onChange={this.handleChange} />
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit">Log In</Button>
