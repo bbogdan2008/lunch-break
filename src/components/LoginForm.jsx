@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
 import { Form, Icon, Input, Button } from 'antd';
 import './LoginForm.css';
+import { doLogin } from '../login/LoginAction';
 
 class LoginForm extends Component {
   constructor(props) {
     super(props);
-      
+    
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -13,6 +16,7 @@ class LoginForm extends Component {
     evt.preventDefault();
 
     console.log("Login action ...");
+    this.props.login('bb','pswd');
   }
 
   render() {
@@ -36,4 +40,16 @@ class LoginForm extends Component {
   }
 }
 
-export default LoginForm;
+const mapStateToProps = state => {
+  return { isLoading: state.login.isLoading }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    login: (username, password) => {
+      dispatch(doLogin(username, password))
+    }
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);

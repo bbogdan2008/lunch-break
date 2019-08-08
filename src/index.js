@@ -5,8 +5,6 @@ import { Provider } from "react-redux";
 import App from "./core/App";
 import configureStore from "./core/store";
 
-import {doLogin} from './login/LoginAction';
-
 const store = configureStore();
 
 const rootElement = document.getElementById("root");
