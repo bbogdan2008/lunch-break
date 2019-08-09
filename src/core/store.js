@@ -1,21 +1,29 @@
+import 'babel-polyfill';
 import { createStore, applyMiddleware } from "redux";
 import { createLogger } from 'redux-logger';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import createSagaMiddleware from "redux-saga";
 
+import rootSaga from './Sagas';
 import rootReducer from "./reducers";
 
-const logger = createLogger({
-  // ...options
-});
+export function configureStore(initialState = {}) {
+  const sagaMiddleware = createSagaMiddleware();
+  const logger = createLogger({
+    // ...options
+  });
+  
+  const middleware = composeWithDevTools(applyMiddleware(logger, sagaMiddleware));
 
-const configureStore = () => {
+  const store = createStore(
+    rootReducer, 
+    initialState,
+    middleware
+  )
 
-  return {
-    ... createStore(
-      rootReducer,
-      composeWithDevTools(applyMiddleware(logger))
-    )
-  }
+  sagaMiddleware.run(rootSaga);
+
+  return store;
 };
 
-export default configureStore;
+
