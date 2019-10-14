@@ -8,7 +8,7 @@ const port = process.env.PORT || 3001;
 
 connectDb().then(
   async () => {
-    console.log(`MongoDB default connection open.`);
+    console.log(`MongoDB connected ...`);
     server.listen(port, () =>
       console.log(`Server listening on port ${port} ...`)
     );
