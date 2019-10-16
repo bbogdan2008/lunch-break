@@ -2,15 +2,24 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
+import validateRegisterInput from '../validation/register';
+import validateLoginInput from '../validation/login';
+
 import models from '../../db';
 
-exports.users_signup = (req, res, next) => {
+exports.users_register = (req, res, next) => {
+  // Validate user input
+  const { errors, isValid } = validateRegisterInput(req.body);
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
   models.User.find({ email: req.body.email })
     .exec()
     .then(users => {
       if (users.length > 0) {
-        return res.status(409).json({
-          message: 'Mail exists'
+        return res.status(400).json({
+          message: 'Email already exists'
         });
       } else {
         bcrypt.hash(req.body.password, 10, (err, hash) => {
@@ -43,6 +52,12 @@ exports.users_signup = (req, res, next) => {
 };
 
 exports.users_login = (req, res, next) => {
+  // Validate user input
+  const { errors, isValid } = validateLoginInput(req.body);
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
   models.User.find({ email: req.body.email }) // TODO use findOne
     .select('_id email name password')
     .exec()
@@ -70,8 +85,9 @@ exports.users_login = (req, res, next) => {
             { expiresIn: '1h' }
           );
           return res.status(200).json({
-            message: 'Auth successful',
-            token: token // TODO send more on client for auth model (username)
+            success: true,
+            token: token, // TODO send more on client for auth model (username)
+            message: 'Auth successful'
           });
         } else {
           return res.status(401).json({
@@ -85,6 +101,10 @@ exports.users_login = (req, res, next) => {
         error: err
       });
     });
+};
+
+exports.users_logout = (req, res, next) => {
+  // TODO
 };
 
 exports.users_delete_user = (req, res, next) => {
