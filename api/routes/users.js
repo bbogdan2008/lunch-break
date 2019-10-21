@@ -1,5 +1,5 @@
 import express from 'express';
-import checkAuth from '../middleware/check-auth';
+import checkAuthentication from '../middleware/check-auth';
 import UsersController from '../controllers/users';
 
 const router = express.Router();
@@ -17,11 +17,15 @@ router.post('/login', UsersController.users_login);
 // @route   POST api/users/logout
 // @desc    Logout user
 // @access  Public
-router.post('/logout', checkAuth, UsersController.users_logout);
+router.post('/logout', checkAuthentication, UsersController.users_logout);
 
 // @route   DELETE api/users/:userId
 // @desc    Register user
 // @access  Private
-router.delete('/:userId', checkAuth, UsersController.users_delete_user);
+router.delete(
+  '/:userId',
+  checkAuthentication,
+  UsersController.users_delete_user
+);
 
 module.exports = router;

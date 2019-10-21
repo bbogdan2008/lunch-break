@@ -1,8 +1,0 @@
-{
-  "env": {
-    "MONGOLAB_USER": "bbogdan2008",
-    "MONGOLAB_PSWD": "temporara123",
-    "MONGOLAB_URL": "ds161397.mlab.com:61397/lunch-break",
-    "JWT_KEY": "secretkey20"
-  }
-}

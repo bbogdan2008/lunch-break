@@ -1,19 +1,15 @@
-import jwt from 'jsonwebtoken';
+import HttpStatus from 'http-status-codes';
 
-const checkAuth = (req, res, next) => {
-  const token = req.headers.authorization.split(' ')[1];
-  if (!token) {
-    res.status(401).send('Unauthorized: No token provided');
+const checkAuthentication = (request, response, next) => {
+  const user = request.session.user;
+  if (user) {
+    next();
   } else {
-    jwt.verify(token, process.env.JWT_KEY, function(err, decoded) {
-      if (err) {
-        res.status(401).send('Unauthorized: Invalid token');
-      } else {
-        req.userData = decoded.decoded;
-        next();
-      }
+    response.status(HttpStatus.UNAUTHORIZED).json({
+      success: false,
+      message: 'Unauthorized: No session'
     });
   }
 };
 
-module.exports = checkAuth;
+module.exports = checkAuthentication;

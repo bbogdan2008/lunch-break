@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import HttpStatus from 'http-status-codes';
+
+import { SESSION_NAME } from '../../config';
 
 import validateRegisterInput from '../validation/register';
 import validateLoginInput from '../validation/login';
@@ -11,6 +13,7 @@ exports.users_register = (req, res, next) => {
   // Validate user input
   const { errors, isValid } = validateRegisterInput(req.body);
   if (!isValid) {
+    console.log('Not valid');
     return res.status(400).json(errors);
   }
 
@@ -51,60 +54,72 @@ exports.users_register = (req, res, next) => {
     });
 };
 
-exports.users_login = (req, res, next) => {
-  // Validate user input
-  const { errors, isValid } = validateLoginInput(req.body);
+exports.users_login = async (request, response) => {
+  const { errors, isValid } = validateLoginInput(request.body);
   if (!isValid) {
-    return res.status(400).json(errors);
+    return response.status(HttpStatus.BAD_REQUEST).json(errors);
   }
 
-  models.User.find({ email: req.body.email }) // TODO use findOne
-    .select('_id email name password')
-    .exec()
-    .then(users => {
-      if (users.length < 1) {
-        return res.status(401).json({
+  try {
+    let users = await models.User.find({ email: request.body.email })
+      .select('_id email name password')
+      .exec();
+
+    if (users.length < 1) {
+      return response.status(HttpStatus.UNAUTHORIZED).json({
+        message: 'Auth failed'
+      });
+    }
+
+    const user = users[0];
+    bcrypt.compare(request.body.password, user.password, (err, result) => {
+      if (err) {
+        return response.status(HttpStatus.UNAUTHORIZED).json({
           message: 'Auth failed'
         });
       }
-      const user = users[0];
-      bcrypt.compare(req.body.password, user.password, (err, result) => {
-        if (err) {
-          return res.status(401).json({
-            message: 'Auth failed'
-          });
-        }
-        if (result) {
-          // create token
-          const token = jwt.sign(
-            {
-              userId: user._id,
-              name: user.name
-            },
-            process.env.JWT_KEY,
-            { expiresIn: '1h' }
-          );
-          return res.status(200).json({
-            success: true,
-            token: token, // TODO send more on client for auth model (username)
-            message: 'Auth successful'
-          });
-        } else {
-          return res.status(401).json({
-            message: 'Auth failed'
-          });
-        }
-      });
-    })
-    .catch(err => {
-      res.status(500).json({
-        error: err
-      });
+      if (result) {
+        request.session.user = {
+          email: user.email,
+          name: user.name
+        };
+
+        return response.status(200).json({
+          success: true,
+          message: 'Login successful'
+        });
+      } else {
+        return response.status(HttpStatus.UNAUTHORIZED).json({
+          message: 'Auth failed'
+        });
+      }
     });
+  } catch (err) {
+    response.status(500).json({
+      error: err
+    });
+  }
 };
 
 exports.users_logout = (req, res, next) => {
-  // TODO
+  // TODO review
+  try {
+    const user = req.session.user;
+    if (user) {
+      req.session.destroy(err => {
+        if (err) throw err;
+        res.clearCookie(SESSION_NAME);
+        res.status(HttpStatus.OK).json({
+          success: true,
+          message: 'Logout successful'
+        });
+      });
+    } else {
+      throw new Error('Something went wrong');
+    }
+  } catch (err) {
+    res.status(422).json({ error: err });
+  }
 };
 
 exports.users_delete_user = (req, res, next) => {

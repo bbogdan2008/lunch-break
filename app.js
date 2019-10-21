@@ -4,10 +4,17 @@ import cors from 'cors';
 import logger from 'morgan';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
+import HttpStatus from 'http-status-codes';
+
+import session from 'express-session';
+import sessionConfig from './sessionConfig';
 
 const userRoutes = require('./api/routes/users');
+const placesRoutes = require('./api/routes/places');
 
 var app = express();
+
+app.use(session(sessionConfig));
 
 app.use(cors());
 app.use(logger('dev'));
@@ -16,48 +23,28 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'client/build')));
 
-// Routes for handling requests
+// Routes
 app.use('/api/users', userRoutes);
+app.use('/api/places', placesRoutes);
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-  );
-  if (req.method === 'OPTIONS') {
-    res.header('Access-Control-Allow-Methods', 'PUT POST PATCH DELETE GET');
-    return res.status(200).json({});
+// not found URI
+app.get((request, response, next) => {
+  let error = new Error('Not Found');
+  error.statusCode = HttpStatus.NOT_FOUND;
+  next(error);
+});
+
+// global error handler
+app.use((error, request, response, next) => {
+  console.log(error);
+
+  if (!error.statusCode) {
+    error.statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
   }
-  next();
-});
-
-// The "catchall" handler: for any request that doesn't match one above, send back React's index.html file.
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname + '/client/build/index.html'));
-});
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  console.log(err);
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});
-
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  console.log(err);
-
-  // render the error page
-  res.status(err.status || 500);
-  res.json({
+  response.status(error.statusCode);
+  response.json({
     error: {
-      message: err.message
+      message: error.message
     }
   });
 });
