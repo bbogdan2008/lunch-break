@@ -2,8 +2,6 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import HttpStatus from 'http-status-codes';
 
-import { SESSION_NAME } from '../../config';
-
 import validateRegisterInput from '../validation/register';
 import validateLoginInput from '../validation/login';
 
@@ -108,7 +106,7 @@ exports.users_logout = (req, res, next) => {
     if (user) {
       req.session.destroy(err => {
         if (err) throw err;
-        res.clearCookie(SESSION_NAME);
+        res.clearCookie(process.env.SESSION_NAME);
         res.status(HttpStatus.OK).json({
           success: true,
           message: 'Logout successful'

@@ -1,11 +1,11 @@
+import dotenv from 'dotenv/config';
 import http from 'http';
-import { HTTP_PORT } from './config';
 import { connectDb } from './db';
 import app from './app';
 
 const server = http.createServer(app);
 
-const httpPort = HTTP_PORT || 3001;
+const httpPort = process.env.HTTP_PORT || 3001;
 
 connectDb().then(
   async () => {
