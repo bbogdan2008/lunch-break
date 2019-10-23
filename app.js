@@ -9,8 +9,8 @@ import HttpStatus from 'http-status-codes';
 import session from 'express-session';
 import sessionConfig from './sessionConfig';
 
-const userRoutes = require('./api/routes/users');
-const placesRoutes = require('./api/routes/places');
+import userRoutes from './api/routes/users';
+import placesRoutes from './api/routes/places';
 
 var app = express();
 

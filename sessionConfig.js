@@ -5,7 +5,7 @@ import connectMongo from 'connect-mongo';
 const MongoStore = connectMongo(session);
 const sessionConfig = {
   name: process.env.SESSION_NAME,
-  secret: process.env.SESSION_SECRET, // TODO review
+  secret: process.env.SESSION_SECRET,
   store: new MongoStore({
     mongooseConnection: mongoose.connection,
     collection: 'sessions',

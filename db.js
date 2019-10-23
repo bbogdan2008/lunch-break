@@ -6,7 +6,7 @@ const dbUri =
   'mongodb://' +
   process.env.MONGO_USER +
   ':' +
-  process.env.MONGO_PSWD +
+  process.env.MONGO_PASSWORD +
   '@' +
   process.env.MONGO_URI;
 
