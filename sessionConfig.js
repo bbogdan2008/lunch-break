@@ -9,13 +9,13 @@ const sessionConfig = {
   store: new MongoStore({
     mongooseConnection: mongoose.connection,
     collection: 'sessions',
-    ttl: parseInt(process.env.SESSION_LIFETIME_HOURS) * 60 * 60 // time period in seconds
+    ttl: 24 * 60 * 60 // time period in seconds
     //touchAfter: 24 * 3600 // time period in seconds
   }),
   cookie: {
     sameSite: true,
     secure: process.env.NODE_ENV === 'production',
-    maxAge: parseInt(process.env.SESSION_LIFETIME_HOURS) * 60 * 60 * 1000 // time period in milliseconds
+    maxAge: 24 * 60 * 60 * 1000 // time period in milliseconds
   },
   resave: false,
   saveUninitialized: false

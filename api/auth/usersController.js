@@ -53,62 +53,61 @@ exports.users_register = (req, res, next) => {
 };
 
 exports.users_login = async (request, response) => {
-  const { errors, isValid } = validateLoginInput(request.body);
+  const { email, password } = request.body;
+
+  const { errors, isValid } = validateLoginInput(email, password);
   if (!isValid) {
-    return response.status(HttpStatus.BAD_REQUEST).json(errors);
+    return response.status(HttpStatus.BAD_REQUEST).json({
+      success: false,
+      message: 'Validation failed',
+      errors
+    });
   }
 
   try {
-    let users = await models.User.find({ email: request.body.email })
-      .select('_id email name password')
-      .exec();
+    const user = await models.User.findOne({ email }).exec();
 
-    if (users.length < 1) {
+    if (!user) {
       return response.status(HttpStatus.UNAUTHORIZED).json({
+        success: false,
         message: 'Auth failed'
       });
     }
+    const match = await bcrypt.compare(password, user.password);
+    if (match) {
+      request.session.user = {
+        email: user.email,
+        name: user.name
+      };
 
-    const user = users[0];
-    bcrypt.compare(request.body.password, user.password, (err, result) => {
-      if (err) {
-        return response.status(HttpStatus.UNAUTHORIZED).json({
-          message: 'Auth failed'
-        });
-      }
-      if (result) {
-        request.session.user = {
-          email: user.email,
-          name: user.name
-        };
+      return response.status(HttpStatus.OK).json({
+        success: true,
+        message: 'Login successful',
+        user: request.session.user
+      });
+    }
 
-        return response.status(200).json({
-          success: true,
-          message: 'Login successful',
-          user: request.session.user
-        });
-      } else {
-        return response.status(HttpStatus.UNAUTHORIZED).json({
-          message: 'Auth failed'
-        });
-      }
+    return response.status(HttpStatus.UNAUTHORIZED).json({
+      success: false,
+      message: 'Auth failed'
     });
   } catch (err) {
-    response.status(500).json({
-      error: err
+    response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: '',
+      errors: [{ error: err }]
     });
   }
 };
 
-exports.users_logout = (req, res, next) => {
-  // TODO review
+exports.users_logout = (request, response) => {
   try {
-    const user = req.session.user;
+    const user = request.session.user;
     if (user) {
-      req.session.destroy(err => {
+      request.session.destroy(err => {
         if (err) throw err;
-        res.clearCookie(process.env.SESSION_NAME);
-        res.status(HttpStatus.OK).json({
+        response.clearCookie(process.env.SESSION_NAME);
+        response.status(HttpStatus.OK).json({
           success: true,
           message: 'Logout successful'
         });
@@ -117,7 +116,11 @@ exports.users_logout = (req, res, next) => {
       throw new Error('Something went wrong');
     }
   } catch (err) {
-    res.status(422).json({ error: err });
+    response.status(HttpStatus.UNPROCESSABLE_ENTITY).json({
+      success: false,
+      message: 'Logout failed',
+      errors: [{ error: err }]
+    });
   }
 };
 
