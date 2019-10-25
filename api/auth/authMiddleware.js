@@ -2,6 +2,8 @@ import HttpStatus from 'http-status-codes';
 
 const checkAuthentication = (request, response, next) => {
   const user = request.session.user;
+  console.log(`User: ${user}`);
+
   if (user) {
     next();
   } else {

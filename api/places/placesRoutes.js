@@ -1,7 +1,7 @@
 import express from 'express';
 import HttpStatus from 'http-status-codes';
 
-import checkAuthentication from '../middleware/check-auth';
+import checkAuthentication from '../auth/authMiddleware';
 
 const router = express.Router();
 

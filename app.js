@@ -9,8 +9,8 @@ import HttpStatus from 'http-status-codes';
 import session from 'express-session';
 import sessionConfig from './sessionConfig';
 
-import userRoutes from './api/routes/users';
-import placesRoutes from './api/routes/places';
+import userRoutes from './api/auth/usersRoutes';
+import placesRoutes from './api/places/placesRoutes';
 
 var app = express();
 

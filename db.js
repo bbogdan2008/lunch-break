@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import User from './api/models/user';
+import User from './api/auth/user';
 
 // db connection
 const dbUri =

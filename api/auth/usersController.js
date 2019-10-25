@@ -2,8 +2,8 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import HttpStatus from 'http-status-codes';
 
-import validateRegisterInput from '../validation/register';
-import validateLoginInput from '../validation/login';
+import validateRegisterInput from './validateRegisterForm';
+import validateLoginInput from './validateLoginForm';
 
 import models from '../../db';
 
@@ -84,7 +84,8 @@ exports.users_login = async (request, response) => {
 
         return response.status(200).json({
           success: true,
-          message: 'Login successful'
+          message: 'Login successful',
+          user: request.session.user
         });
       } else {
         return response.status(HttpStatus.UNAUTHORIZED).json({
