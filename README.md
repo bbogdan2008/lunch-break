@@ -1,4 +1,4 @@
-# lunch-break &middot; [![GitHub license](https://img.shields.io/github/license/bbogdan2008/lunch-break)] [![Build Status](https://travis-ci.org/bbogdan2008/lunch-break.svg?branch=master)](https://travis-ci.org/bbogdan2008/lunch-break)
+# lunch-break &middot; ![GitHub license](https://img.shields.io/github/license/bbogdan2008/lunch-break) [![Build Status](https://travis-ci.org/bbogdan2008/lunch-break.svg?branch=master)](https://travis-ci.org/bbogdan2008/lunch-break)
 
 Learning React and Redux, React Router, Redux Saga, Reselect, Axios / NodeJS + Express / MongoDB + Mongoose
 
