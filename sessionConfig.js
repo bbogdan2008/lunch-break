@@ -17,8 +17,8 @@ const sessionConfig = {
     secure: process.env.NODE_ENV === 'production',
     maxAge: 24 * 60 * 60 * 1000 // time period in milliseconds
   },
-  resave: false,
-  saveUninitialized: false
+  resave: true,
+  saveUninitialized: true
 };
 
 export default sessionConfig;

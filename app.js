@@ -27,8 +27,15 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 app.use('/api/users', userRoutes);
 app.use('/api/places', placesRoutes);
 
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/build/index.html'));
+});
+
 // not found URI
 app.get((request, response, next) => {
+  console.log(err);
   let error = new Error('Not Found');
   error.statusCode = HttpStatus.NOT_FOUND;
   next(error);
