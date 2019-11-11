@@ -1,5 +1,5 @@
-import path from 'path';
 import express from 'express';
+import path from 'path';
 import cors from 'cors';
 import logger from 'morgan';
 import cookieParser from 'cookie-parser';
@@ -33,7 +33,6 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'client/build/index.html'));
 });
 
-// not found URI
 app.get((request, response, next) => {
   console.log(err);
   let error = new Error('Not Found');
