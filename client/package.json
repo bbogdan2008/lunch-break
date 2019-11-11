@@ -8,16 +8,6 @@
     "start": "webpack-dev-server --mode development",
     "build": "webpack --mode production"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/bbogdan2008/lunch-break.git"
-  },
-  "author": "",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/bbogdan2008/lunch-break/issues"
-  },
-  "homepage": "https://github.com/bbogdan2008/lunch-break#readme",
   "devDependencies": {
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",

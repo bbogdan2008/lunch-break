@@ -3,15 +3,16 @@
   "version": "0.0.1",
   "description": "",
   "scripts": {
-    "start": "npm run prod",
+    "start": "npm run server:prod",
     "server": "babel-node ./src/bin/server",
     "server:prod": "node ./dist/bin/server",
     "dev": "set NODE_ENV=development & set DEBUG=lunch-break:server & npm-run-all server",
     "clean": "rimraf dist",
-    "build": "babel ./src --out-dir dist",
-    "prod": "set NODE_ENV=production & npm-run-all clean build server:prod",
-    "watch": "nodemon",
-    "build-client": "cd client && npm install && npm run build"
+    "build:server": "babel ./src --out-dir dist",
+    "build:client": "cd client && npm install && npm run build",
+    "copy:client": "cp -R ./client/dist/* ./dist/client/",
+    "build": "set NODE_ENV=production & npm-run-all clean build:server build:client copy:client",
+    "watch": "nodemon"
   },
   "repository": {
     "type": "git",

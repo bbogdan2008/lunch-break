@@ -1,40 +1,39 @@
-const path = require('path');
-const webpack = require('webpack');
+const path = require("path");
+const webpack = require("webpack");
 
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  entry: './src/index.js',
-  mode: 'development',
+  entry: "./src/index.js",
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
         exclude: /(node_modules|bower_components)/,
-        loader: 'babel-loader',
-        options: { presets: ['@babel/env'] }
+        loader: "babel-loader",
+        options: { presets: ["@babel/env"] }
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader']
+        use: ["style-loader", "css-loader"]
       }
     ]
   },
-  resolve: { extensions: ['*', '.js', '.jsx'] },
+  resolve: { extensions: ["*", ".js", ".jsx"] },
   output: {
-    path: path.resolve(__dirname, 'build'),
-    filename: '[name].bundle.js'
+    path: path.resolve(__dirname, "dist"),
+    filename: "[name].bundle.js"
   },
   devServer: {
-    contentBase: path.join(__dirname, 'build'),
+    contentBase: path.join(__dirname, "dist"),
     port: 3000,
-    publicPath: 'http://localhost:3000',
+    publicPath: "http://localhost:3000",
     hotOnly: true
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './src/index.html',
-      title: 'Lunch break'
+      template: "./src/index.html",
+      title: "Lunch break"
     }),
     new webpack.HotModuleReplacementPlugin()
   ]
