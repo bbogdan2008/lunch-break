@@ -9,7 +9,7 @@
     "dev": "set NODE_ENV=development & set DEBUG=lunch-break:server & npm-run-all server",
     "clean": "rimraf dist",
     "build:server": "babel ./src --out-dir dist",
-    "build:client": "cd client && npm install && npm run build",
+    "build:client": "cd client & npm install & npm run build",
     "build": "set NODE_ENV=production & npm-run-all clean build:server build:client",
     "watch": "nodemon"
   },
