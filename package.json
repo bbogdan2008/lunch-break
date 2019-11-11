@@ -10,7 +10,7 @@
     "clean": "rimraf dist",
     "build:server": "babel ./src --out-dir dist",
     "build:client": "cd client && npm install && npm run build",
-    "copy:client": "cp -R ./client/dist/* ./dist/client/",
+    "copy:client": "mkdir -p dist/client && cp -R ./client/dist/* ./dist/client/",
     "build": "set NODE_ENV=production & npm-run-all clean build:server build:client copy:client",
     "watch": "nodemon"
   },
