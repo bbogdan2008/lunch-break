@@ -21,7 +21,6 @@ app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "client")));
 
 // Routes
 app.use("/api/users", userRoutes);
@@ -29,9 +28,15 @@ app.use("/api/places", placesRoutes);
 
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client/index.html"));
-});
+
+if (process.env.NODE_ENV === "production ") {
+  app.use(express.static(path.join(__dirname, "../client/dist")));
+  console.log(path.join(__dirname, "../client/dist"));
+
+  app.get("*", (request, response) => {
+    response.sendFile(path.join(__dirname, "../client/dist/index.html"));
+  });
+}
 
 app.get((request, response, next) => {
   console.log(err);
