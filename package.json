@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "",
   "scripts": {
-    "start": "npm-run-all server:prod",
+    "start": "npm-run-all build server:prod",
     "server": "babel-node ./src/bin/server",
     "server:prod": "set NODE_ENV=production & node ./dist/bin/server",
     "dev": "set NODE_ENV=development & set DEBUG=lunch-break:server & npm-run-all server",
