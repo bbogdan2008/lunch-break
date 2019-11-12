@@ -12,7 +12,7 @@ const debug = debugLib("lunch-break:server");
 /**
  * Get port from environment and store in Express.
  */
-const port = normalizePort(process.env.HTTP_PORT || 3001);
+const port = normalizePort(process.env.PORT || 3001);
 app.set("port", port);
 
 const server = http.createServer(app);
