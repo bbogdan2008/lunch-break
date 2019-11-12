@@ -32,6 +32,8 @@ app.use("/api/places", placesRoutes);
 if (process.env.NODE_ENV === "production ") {
   app.use(express.static(path.join(__dirname, "../client/dist")));
 
+  console.log("DIR: " + path.join(__dirname, "../client/dist"));
+
   app.get("*", (request, response) => {
     response.sendFile(path.join(__dirname, "../client/dist/index.html"));
   });
