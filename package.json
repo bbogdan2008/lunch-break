@@ -3,14 +3,14 @@
   "version": "0.0.1",
   "description": "",
   "scripts": {
-    "start": "npm-run-all build server:prod",
+    "start": "npm-run-all server:prod",
     "server": "babel-node ./src/bin/server",
     "server:prod": "set NODE_ENV=production & node ./dist/bin/server",
     "dev": "set NODE_ENV=development & set DEBUG=lunch-break:server & npm-run-all server",
     "clean": "rimraf dist",
     "build:server": "babel ./src --out-dir dist",
     "build:client": "cd client && npm install && npm run build",
-    "build": "set NODE_ENV=production & npm-run-all clean build:server build:client",
+    "build": "set NODE_ENV=production & npm install & npm-run-all clean build:server build:client",
     "watch": "nodemon",
     "heroku-prebuild": "cd client && npm install --dev"
   },
