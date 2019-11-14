@@ -3,16 +3,15 @@
   "version": "0.0.1",
   "description": "",
   "scripts": {
-    "start": "npm-run-all server:prod",
-    "server": "babel-node ./src/bin/server",
-    "server:prod": "set NODE_ENV=production & node ./dist/bin/server",
-    "dev": "set NODE_ENV=development & set DEBUG=lunch-break:server & npm-run-all server",
-    "clean": "rimraf dist",
-    "build:server": "babel ./src --out-dir dist",
+    "clean": "rimraf dist && mkdir dist",
+    "build:server": "babel -d ./dist ./src -s",
     "build:client": "cd client && npm install && npm run build",
-    "build": "set NODE_ENV=production & npm install & npm-run-all clean build:server build:client",
-    "watch": "nodemon",
-    "heroku-prebuild": "cd client && npm install --dev && npm run build"
+    "copy:client": "copyfiles -f ./client/dist/*.* dist/client",
+    "build": "npm install && npm-run-all clean build:server build:client copy:client",
+    "start": "set NODE_ENV=production && node ./dist/bin/server",
+    "server:dev": "babel-node ./src/bin/server",
+    "dev": "set NODE_ENV=development & set DEBUG=lunch-break:server & npm run server:dev",
+    "watch": "nodemon"
   },
   "repository": {
     "type": "git",
@@ -28,6 +27,7 @@
     "body-parser": "^1.19.0",
     "connect-mongo": "^3.0.0",
     "cookie-parser": "^1.4.4",
+    "copyfiles": "^2.1.1",
     "core-js": "^3.4.0",
     "cors": "^2.8.5",
     "debug": "^4.1.1",

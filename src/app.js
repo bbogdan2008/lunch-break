@@ -29,13 +29,15 @@ app.use("/api/places", placesRoutes);
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.
 
-if (process.env.NODE_ENV === "production ") {
-  app.use(express.static(path.join(__dirname, "../client/dist")));
+console.log("NODE_ENV: '" + process.env.NODE_ENV + "'");
 
-  console.log("DIR: " + path.join(__dirname, "../client/dist"));
+if (process.env.NODE_ENV === "production ") {
+  app.use(express.static(path.join(__dirname, "client")));
+
+  console.log("DIR: " + path.join(__dirname, "client"));
 
   app.get("*", (request, response) => {
-    response.sendFile(path.join(__dirname, "../client/dist/index.html"));
+    response.sendFile(path.resolve(__dirname, "client", "index.html"));
   });
 }
 
