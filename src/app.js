@@ -32,12 +32,12 @@ app.use("/api/places", placesRoutes);
 console.log("NODE_ENV: '" + process.env.NODE_ENV + "'");
 
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../client")));
+  app.use(express.static(path.join(__dirname, "client")));
 
-  console.log("DIR: " + path.join(__dirname, "../client"));
+  console.log("DIR: " + path.join(__dirname, "client"));
 
   app.get("*", (request, response) => {
-    response.sendFile(path.resolve(__dirname, "../client", "index.html"));
+    response.sendFile(path.resolve(__dirname, "client", "index.html"));
   });
 }
 
