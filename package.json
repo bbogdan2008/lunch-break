@@ -12,7 +12,7 @@
     "build:client": "cd client && npm install && npm run build",
     "build": "set NODE_ENV=production & npm install & npm-run-all clean build:server build:client",
     "watch": "nodemon",
-    "heroku-prebuild": "cd client && npm install --dev"
+    "heroku-prebuild": "cd client && npm install --dev && npm run build"
   },
   "repository": {
     "type": "git",
