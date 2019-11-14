@@ -5,7 +5,7 @@
   "scripts": {
     "clean": "rimraf dist && mkdir dist",
     "build:server": "babel -d ./dist ./src -s",
-    "build:client": "cd client && npm install && npm run build",
+    "build:client": "cd client && npm install --dev && npm run build",
     "copy:client": "copyfiles -f ./client/dist/*.* dist/client",
     "build": "npm install && npm-run-all clean build:server build:client copy:client",
     "start": "set NODE_ENV=production && node ./dist/bin/server",
