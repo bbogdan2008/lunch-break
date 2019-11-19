@@ -4,14 +4,18 @@ const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  entry: "./src/index.js",
+  devtool: 'inline-source-map',
+  entry: path.resolve(__dirname, "src/index.js"),
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
         exclude: /(node_modules|bower_components)/,
-        loader: "babel-loader",
-        options: { presets: ["@babel/env"] }
+        include: path.resolve(__dirname, 'src'),
+        use: [{
+          loader: "babel-loader",
+          options: { presets: ["@babel/env"] }
+        }, "eslint-loader"]
       },
       {
         test: /\.css$/,
@@ -32,7 +36,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./src/index.html",
+      template: "src/index.html",
       title: "Lunch break"
     }),
     new webpack.HotModuleReplacementPlugin()

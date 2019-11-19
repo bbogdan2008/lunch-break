@@ -7,23 +7,23 @@ import createSagaMiddleware from "redux-saga";
 import rootSaga from './Sagas';
 import rootReducer from "./reducers";
 
-export function configureStore(initialState = {}) {
-  const sagaMiddleware = createSagaMiddleware();
-  const logger = createLogger({
+export function configureStore (initialState = {}) {
+    const sagaMiddleware = createSagaMiddleware();
+    const logger = createLogger({
     // ...options
-  });
-  
-  const middleware = composeWithDevTools(applyMiddleware(logger, sagaMiddleware));
+    });
 
-  const store = createStore(
-    rootReducer, 
-    initialState,
-    middleware
-  )
+    const middleware = composeWithDevTools(applyMiddleware(logger, sagaMiddleware));
 
-  sagaMiddleware.run(rootSaga);
+    const store = createStore(
+        rootReducer,
+        initialState,
+        middleware
+    );
 
-  return store;
-};
+    sagaMiddleware.run(rootSaga);
+
+    return store;
+}
 
 
