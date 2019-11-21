@@ -5,6 +5,12 @@
         "browser": true,
         "node": true
     },
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true,
+            "legacyDecorators": true
+        }
+    },
     "settings": {
         "react": {
             "version": "detect"

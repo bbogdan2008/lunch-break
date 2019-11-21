@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import { Form, Icon, Input, Button } from 'antd';
 import './LoginForm.css';
@@ -69,6 +70,10 @@ const mapDispatchToProps = dispatch => {
             dispatch(doLogin(username, password));
         }
     };
+};
+
+LoginForm.propTypes = {
+    login: PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
