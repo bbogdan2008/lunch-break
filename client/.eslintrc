@@ -1,19 +1,27 @@
 {
-    "parser": "babel-eslint",
-    "extends": "react",
     "env": {
         "browser": true,
+        "es6": true,
         "node": true
+    },
+    "extends": [
+        "airbnb"
+    ],
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
     },
     "parserOptions": {
         "ecmaFeatures": {
-            "jsx": true,
-            "legacyDecorators": true
-        }
+            "jsx": true
+        },
+        "ecmaVersion": 2018,
+        "sourceType": "module"
     },
-    "settings": {
-        "react": {
-            "version": "detect"
-        }
+    "plugins": [
+        "react"
+    ],
+    "rules": {
+        "import/no-extraneous-dependencies": ["error", {"devDependencies": ["./src/core/DevTools.jsx"]}]
     }
 }

@@ -1,0 +1,8 @@
+# node_modules ignored by default
+
+src/index.js
+build/
+dist/
+scripts/
+config/
+node_modules/

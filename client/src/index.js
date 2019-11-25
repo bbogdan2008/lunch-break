@@ -1,16 +1,7 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import 'babel-polyfill';
 
-import { Provider } from "react-redux";
-import App from "./core/App";
-import { configureStore } from "./core/store";
+import React from 'react';
+import { render } from 'react-dom';
+import Root from './core/Root';
 
-const store = configureStore();
-
-const rootElement = document.getElementById("root");
-ReactDOM.render(
-    <Provider store={store}>
-        <App />
-    </Provider>,
-    rootElement
-);
+render(<Root />, document.getElementById('root'));

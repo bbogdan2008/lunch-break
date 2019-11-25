@@ -31,7 +31,7 @@ app.use("/api/places", placesRoutes);
 
 console.log("NODE_ENV: '" + process.env.NODE_ENV + "'");
 
-if (process.env.NODE_ENV === "production") {
+if (process.env.NODE_ENV != null && process.env.NODE_ENV.startsWith("production")) {
   app.use(express.static(path.join(__dirname, "client")));
 
   console.log("DIR: " + path.join(__dirname, "client"));
